@@ -1,0 +1,83 @@
+name: wmx-kiosk-session
+version: '8'
+summary: The superior wmx window manager for mir-kiosk
+description: |
+  wmx is a window manager for X. It's based on wm2,
+  and it retains a similar look and feel, but it's
+  intended to provide an experimental vehicle for
+  features that fall comfortably outside the scope
+  of the manifesto for the original wm2.
+
+grade: stable
+confinement: devmode
+
+apps:
+  wmx:
+    command: bin/launcher.sh
+    environment:
+      WAYLAND_SOCKET_DIR: $SNAP_DATA/wayland
+      XWAYLAND_FULLSCREEN_WINDOW_HINT: title="wmx"
+      FONTCONFIG_PATH: $SNAP/etc/fonts/config.d
+      FONTCONFIG_FILE: $SNAP/etc/fonts/fonts.conf
+    daemon: simple
+    plugs:
+      - x11-plug
+      - wayland
+      - opengl
+      - network
+      - network-bind
+    slots: [ x11 ]
+
+plugs:
+  wayland-socket-dir:
+    content: wayland-socket-dir
+    interface: content
+    target: $SNAP_DATA/wayland
+    default-provider: mir-kiosk
+  x11-plug:
+    interface: x11
+
+parts:
+  wmx:
+    after: [ xwayland-kiosk-helper ]
+    source: http://www.all-day-breakfast.com/wmx/wmx-8.tar.gz
+    plugin: nil
+    override-build: |
+      ./configure --prefix=$SNAPCRAFT_PART_INSTALL
+      sed -i 's/x-terminal-emulator/\/snap\/wmx\/current\/bin\/launchterm/' Config.h
+      sed -i 's/Bitstream Vera Sans/DejaVu Sans/' Config.h
+      sed -i 's/-chown/#-chown/' Makefile
+      make
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      make install
+      cp ../../../launcher.sh $SNAPCRAFT_PART_INSTALL/bin
+      cp ../../../launchterm $SNAPCRAFT_PART_INSTALL/bin
+    build-packages:
+      - libfontconfig1-dev
+      - libice-dev
+      - libsm-dev
+      - libx11-dev
+      - libxau-dev
+      - libxcb1-dev
+      - libxcomposite-dev
+      - libxdmcp-dev
+      - libxext-dev
+      - libxft-dev
+      - libxpm-dev
+      - libxrender-dev
+    stage-packages:
+      - bsdutils
+      - fonts-dejavu-core
+      - libsm6
+      - libice6
+      - libx11-6
+      - libxau6
+      - libxcomposite1
+      - libxdmcp6
+      - libxext6
+      - libxft2
+      - libxpm4
+      - libxrender1
+      - libfontconfig1
+      - libxcb1
+      - xterm

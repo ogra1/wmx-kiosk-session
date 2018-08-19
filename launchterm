@@ -1,0 +1,5 @@
+#! /bin/sh
+
+$SNAP/usr/bin/script /dev/null
+
+$SNAP/usr/bin/xterm
