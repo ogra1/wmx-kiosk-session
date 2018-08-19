@@ -44,7 +44,7 @@ parts:
     plugin: nil
     override-build: |
       ./configure --prefix=$SNAPCRAFT_PART_INSTALL
-      sed -i 's/x-terminal-emulator/\/snap\/wmx\/current\/bin\/launchterm/' Config.h
+      sed -i 's/x-terminal-emulator/\/snap\/wmx-kiosk-session\/current\/bin\/launchterm/' Config.h
       sed -i 's/Bitstream Vera Sans/DejaVu Sans/' Config.h
       sed -i 's/-chown/#-chown/' Makefile
       make
