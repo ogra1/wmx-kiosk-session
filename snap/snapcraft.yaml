@@ -88,3 +88,4 @@ parts:
       - libfontconfig1
       - libxcb1
       - rxvt-unicode
+      - x11-apps
