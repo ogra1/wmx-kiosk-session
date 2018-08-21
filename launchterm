@@ -1,5 +1,22 @@
 #! /bin/sh
 
-$SNAP/usr/bin/script /dev/null
+export LC_ALL=C.UTF-8
 
-$SNAP/usr/bin/xterm
+case $SNAP_ARCH in
+    amd64)
+        TRIPLET="x86_64-linux-gnu"
+        ;;
+    armhf)
+        TRIPLET="arm-linux-gnueabihf"
+        ;;
+    arm64)
+        TRIPLET="aarch64-linux-gnu"
+        ;;
+    *)
+        TRIPLET="$(uname -p)-linux-gnu"
+        ;;
+esac
+
+export PERL5LIB="${PERL5LIB}:${SNAP}/usr/lib/urxvt:${SNAP}/usr/lib/urxvt/perl:${SNAP}/usr/local/lib/$TRIPLET/perl/5.22.1:${SNAP}/usr/local/share/perl/5.22.1:${SNAP}/usr/lib/$TRIPLET/perl5/5.22:${SNAP}/usr/share/perl5:${SNAP}/usr/lib/$TRIPLET/perl/5.22:${SNAP}/usr/share/perl/5.22:${SNAP}/usr/local/lib/site_perl:${SNAP}/usr/lib/$TRIPLET/perl-base"
+
+$SNAP/usr/bin/rxvt-unicode -ut -e $SNAP/bin/static-sh

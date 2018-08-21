@@ -1,6 +1,6 @@
 name: wmx-kiosk-session
 version: '8'
-summary: The superior wmx window manager for mir-kiosk
+summary: The superior wmx window manager in a busybox session for mir-kiosk
 description: |
   wmx is a window manager for X. It's based on wm2,
   and it retains a similar look and feel, but it's
@@ -9,7 +9,7 @@ description: |
   of the manifesto for the original wm2.
 
 grade: stable
-confinement: devmode
+confinement: strict
 
 apps:
   wmx:
@@ -44,8 +44,15 @@ parts:
     plugin: nil
     override-build: |
       ./configure --prefix=$SNAPCRAFT_PART_INSTALL
-      sed -i 's/x-terminal-emulator/\/snap\/wmx\/current\/bin\/launchterm/' Config.h
+      # enable clock
+      sed -i 's/#define CONFIG_CLOCK.\{14\}False/#define CONFIG_CLOCK\t\t  True/' Config.h
+      # use our own cursor
+      # sed -i 's/#define CONFIG_USE_PLAIN_X_CURSORS\tTrue/#define CONFIG_USE_PLAIN_X_CURSORS\tFalse/' Config.h
+      # change terminal command
+      sed -i 's/x-terminal-emulator/launchterm/' Config.h
+      # swich default font
       sed -i 's/Bitstream Vera Sans/DejaVu Sans/' Config.h
+      # drop useless chown
       sed -i 's/-chown/#-chown/' Makefile
       make
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
@@ -66,7 +73,9 @@ parts:
       - libxpm-dev
       - libxrender-dev
     stage-packages:
+      - busybox-static
       - bsdutils
+      - dropbear-bin
       - fonts-dejavu-core
       - libsm6
       - libice6
@@ -80,4 +89,4 @@ parts:
       - libxrender1
       - libfontconfig1
       - libxcb1
-      - xterm
+      - rxvt-unicode
