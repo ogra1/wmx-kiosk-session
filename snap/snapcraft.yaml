@@ -26,6 +26,15 @@ apps:
       - opengl
       - network
       - network-bind
+      - system-observe
+      - log-observe
+      - mount-observe
+      - removable-media
+      - network-observe
+      - shutdown
+      - timezone-control
+      - time-control
+      - hostname-control
     slots: [ x11 ]
 
 plugs:
