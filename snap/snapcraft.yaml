@@ -46,8 +46,6 @@ parts:
       ./configure --prefix=$SNAPCRAFT_PART_INSTALL
       # enable clock
       sed -i 's/#define CONFIG_CLOCK.\{14\}False/#define CONFIG_CLOCK\t\t  True/' Config.h
-      # use our own cursor
-      # sed -i 's/#define CONFIG_USE_PLAIN_X_CURSORS\tTrue/#define CONFIG_USE_PLAIN_X_CURSORS\tFalse/' Config.h
       # change terminal command
       sed -i 's/x-terminal-emulator/launchterm/' Config.h
       # swich default font
