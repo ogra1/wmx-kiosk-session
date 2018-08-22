@@ -59,6 +59,8 @@ parts:
       sed -i 's/#define CONFIG_USE_PLAIN_X_CURSORS\tTrue/#define CONFIG_USE_PLAIN_X_CURSORS\tFalse/' Config.h
       # change terminal command
       sed -i 's/x-terminal-emulator/launchterm/' Config.h
+      # rename "New" to "New Terminal"
+      sed -i 's/\"New\"/\"New Terminal\"/' Config.h
       # swich default font
       sed -i 's/Bitstream Vera Sans/DejaVu Sans/' Config.h
       # drop useless chown
@@ -81,6 +83,7 @@ parts:
       - libxft-dev
       - libxpm-dev
       - libxrender-dev
+      - xfonts-utils
     stage-packages:
       - busybox-static
       - bsdutils
@@ -99,4 +102,21 @@ parts:
       - libfontconfig1
       - libxcb1
       - rxvt-unicode
+      - xfonts-75dpi
+      - xfonts-100dpi
+      - xfonts-base
+      - xfonts-scalable
+      - xfonts-unifont
       - x11-apps
+      - x11-xserver-utils
+  x11fonts:
+    plugin: nil
+    after: [ wmx ]
+    override-prime: |
+      for dir in X11/misc X11/Type1 X11/75dpi X11/100dpi truetype/dejavu; do
+        cd usr/share/fonts/$dir
+        mkfontscale
+        mkfontdir
+        cd - >/dev/null
+      done
+      snapcraftctl prime

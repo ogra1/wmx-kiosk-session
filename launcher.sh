@@ -67,7 +67,8 @@ EOF
 XDG_RUNTIME_DIR=$WAYLAND_SOCKET_DIR \
 SNAPPY_PRELOAD=$SNAP \
 LD_PRELOAD=$SNAP/lib/libxwayland-preload.so \
-  $SNAP/usr/bin/Xwayland -terminate :${port} & pid=$!
+  $SNAP/usr/bin/Xwayland -terminate :${port} \
+  -fp $SNAP/usr/share/fonts/truetype/dejavu,$SNAP/usr/share/fonts/X11/misc,$SNAP/usr/share/fonts/X11/Type1,$SNAP/usr/share/fonts/X11/100dpi,$SNAP/usr/share/fonts/X11/75dpi & pid=$!
 
 trap "trap - SIGTERM && kill $pid" SIGINT SIGTERM EXIT # kill on signal or quit
 sleep 1 # FIXME - Xwayland does emit SIGUSR1 when ready for client connections
@@ -80,4 +81,4 @@ export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 
 # Avoid using $XDG_RUNTIME_DIR until LP: #1656340 is fixed
 XDG_RUNTIME_DIR=$SNAP_DATA \
-  $SNAP/bin/wmx
+  $SNAP/bin/wmx && exit 1
