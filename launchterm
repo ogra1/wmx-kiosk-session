@@ -19,4 +19,8 @@ esac
 
 export PERL5LIB="${PERL5LIB}:${SNAP}/usr/lib/urxvt:${SNAP}/usr/lib/urxvt/perl:${SNAP}/usr/local/lib/$TRIPLET/perl/5.22.1:${SNAP}/usr/local/share/perl/5.22.1:${SNAP}/usr/lib/$TRIPLET/perl5/5.22:${SNAP}/usr/share/perl5:${SNAP}/usr/lib/$TRIPLET/perl/5.22:${SNAP}/usr/share/perl/5.22:${SNAP}/usr/local/lib/site_perl:${SNAP}/usr/lib/$TRIPLET/perl-base"
 
-$SNAP/usr/bin/rxvt-unicode -ut -e $SNAP/bin/static-sh
+export URXVT_PERL_LIB="${SNAP}/usr/lib/urxvt/perl"
+
+TERMFONT="xft:dejavu sans mono:size=8:antialias=true"
+
+$SNAP/usr/bin/urxvt -fn "$TERMFONT" -tn xterm-256color -bg "#5E2750" -fg "#FFFFFF" -ut -sr -cd $HOME -name Terminal -title Terminal -e $SNAP/bin/static-sh

@@ -76,7 +76,7 @@ sleep 1 # FIXME - Xwayland does emit SIGUSR1 when ready for client connections
 export DISPLAY=:${port}
 
 export XDG_DATA_HOME=$SNAP/usr/share
-export FONTCONFIG_PATH=$SNAP/etc/fonts/config.d
+export FONTCONFIG_PATH=$SNAP/etc/fonts/conf.d
 export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 
 # Avoid using $XDG_RUNTIME_DIR until LP: #1656340 is fixed

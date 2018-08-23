@@ -88,6 +88,7 @@ parts:
       - busybox-static
       - bsdutils
       - dropbear-bin
+      - fontconfig
       - fonts-dejavu-core
       - libsm6
       - libice6
